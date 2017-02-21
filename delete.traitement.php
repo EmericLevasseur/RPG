@@ -7,7 +7,10 @@ require_once('config.php');
 $req = $bdd->prepare('DELETE FROM Joueur WHERE idJoueur=' . $_SESSION['id']);
 $req->execute(array($_POST['idJoueur']));
 
+if($req){
+  $_SESSION['email'] = '';
+  header('Location: index.php');
 
+}
 // Redirection du visiteur vers la page du minichat
-header('Location: index.php');
 ?>

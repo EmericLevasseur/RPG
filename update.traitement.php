@@ -1,34 +1,41 @@
 <?php
 require_once ('config.php');
 
-$sPersonnage =
+$sJoueur =
 '
 select *
-from personnage
-where user_id = "'.$_GET['id'].'"
+from Joueur
+where idJoueur = "'.$_SESSION['id'].'"
 ';
-$oMoi				=	$bdd->query($sMoi);
-$aMoi				=	$oMoi->fetchAll(PDO::FETCH_ASSOC);
+$oJoueur				=	$bdd->query($sJoueur);
+$aJoueur				=	$oJoueur->fetchAll(PDO::FETCH_ASSOC);
 
 if(!empty($_POST['modifier'])){
   $sModifier = '
-UPDATE Users
-SET user_pseudo = :pseudo,
-  user_email = :email
-WHERE user_id = :id
+UPDATE Joueur
+SET nom = :nom, prenom = :prenom, pseudo = :pseudo, descriptif = :descriptif, email = :email
+WHERE idJoueur = :id
   ';
   $aParamUser			=	[
-  ':pseudo'			=>	$_POST['pseudo'],
+  ':nom'			    =>	$_POST['nom'],
+  ':prenom'				=>	$_POST['prenom'],
+  ':pseudo'				=>	$_POST['pseudo'],
+  ':descriptif'		=>	$_POST['descriptif'],
   ':email'				=>	$_POST['email'],
-  ':id'				=>	$_SESSION['id']
+  ':id'				    =>	$_SESSION['id']
   ];
 
   $oModifier	=	$bdd->prepare ( $sModifier );
   $bReturn = $oModifier->execute( $aParamUser );
   if ($bReturn == 0 ) {
-    echo 'ok';
-  } else {
+    echo 'erreur';
 
-    header('Location: profil.php');
+  } else {
+    $_SESSION['pseudo'] = $_POST['pseudo'];
+    $_SESSION['nom'] = $_POST['nom'];
+    $_SESSION['prenom'] = $_POST['prenom'];
+    $_SESSION['email'] = $_POST['email'];
+    $_SESSION['descriptif'] = $_POST['descriptif'];
+    header('Location: index.php');
   }
 }

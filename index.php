@@ -2,8 +2,7 @@
 
 require_once 'libs/PHPMailer/PHPMailerAutoload.php';
 require_once 'config.php';
-if (isset($_SESSION['email'])) {
-
+if (isset($_SESSION['email']) && (!empty($_SESSION['email']))) {
   if($_POST['envoyer']){
 
     $m = new PHPMailer;
@@ -56,6 +55,7 @@ if (isset($_SESSION['email'])) {
       <textarea name="descriptif" rows="8" cols="80"  placeholder="Descriptif"></textarea><br></br>
       <input type="submit" name="envoyer" value="Envoyer"><br></br>
       </form>
+      <a href="updateJoueur.php">Modifier</a>
 
       <?php } else {
         header('Location: login.php');
